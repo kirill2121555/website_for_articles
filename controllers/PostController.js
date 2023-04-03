@@ -4,8 +4,8 @@ const PostService = require('../services/PostService')
 class PostController {
   async getAllPost(req, res) {
     try {
-      const page = parseInt(req.query.page, 10) || 0;
-      const limit = parseInt(req.query.limit, 10) || 10
+      const page = req.query.page || 0;
+      const limit = req.query.limit || 10
       let posts = await PostService.getAllPost(page, limit)
       return res.status(200).json(posts)
     }

@@ -7,6 +7,9 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const errorMiddleware = require('./middlewares/error-middleware')
 const passport = require('passport');
+const swaggerUi = require('swagger-ui-express'); 
+const swaggerDocument = require('./Swagger.json'); 
+
 const PORT = process.env.PORT || 5000
 
 const app = express()
@@ -19,12 +22,14 @@ app.use('/images', express.static('images'))
 app.use('/', router)
 app.set('views', path.join(__dirname, 'views'));
 app.use(errorMiddleware);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 const start = async () => {
     try {
         await mongoose.connect(process.env.link)
         app.listen(PORT, () => console.log('server started'))
+
     } catch (e) {
         console.log(e)
     }
