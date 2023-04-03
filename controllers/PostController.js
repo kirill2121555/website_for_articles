@@ -33,9 +33,9 @@ class PostController {
       const posts = await PostService.getAllPostSearch(page, limit, search)
       return res.status(200).json(posts)
     }
-    catch (e) {
+    catch (error) {
       logger.error('Error in PostController.getAllPostsearch ' + error.message);
-      return res.status(400).json(e.message)
+      return res.status(400).json(error.message)
     }
   }
 
@@ -53,8 +53,8 @@ class PostController {
   async addPost(req, res) {
     try {
       const { name, text } = req.body;
-      const post = await PostService.addPost(name, text, req.user.id)
-      return res.status(200).json(post)
+      await PostService.addPost(name, text, req.user.id)
+      return res.status(201)
     } catch (error) {
       logger.error('Error in PostController.addPost ' + error.message);
       return res.status(400).json(error.message)
@@ -64,8 +64,8 @@ class PostController {
   async deletePost(req, res) {
     const postid = req.params.id;
     try {
-      const post = await PostService.deletePost(postid, req.user.id)
-      return res.status(200).json({ post })
+      await PostService.deletePost(postid, req.user.id)
+      return res.status(204)
     } catch (error) {
       logger.error('Error in PostController.deletepost ' + error.message);
       return res.status(400).json(error.message)
@@ -76,8 +76,8 @@ class PostController {
     const { text, name } = req.body
     const id = req.params.id;
     try {
-      const post = await PostService.putPost(id, text, name, req.user.id)
-      return res.status(200).json({ post })
+      await PostService.putPost(id, text, name, req.user.id)
+      return res.status(204)
     } catch (error) {
       logger.error('Error in PostController.putPost ' + error.message);
       return res.status(400).json('Error')

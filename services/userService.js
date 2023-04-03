@@ -44,9 +44,10 @@ class UserService {
 
     async addfoto(userId, file) {
         if (file) {
-            const newAvatar = await userModel.findByIdAndUpdate(userId, { avatar: file.originalname })
-            return file
+            await userModel.findByIdAndUpdate(userId, { avatar: file.originalname })
+            return
         }
+        throw new Error('Error file upload ')
     }
 
     async ProfileInfo(userId) {

@@ -36,7 +36,7 @@ class PostService {
                 $push: { post: post.id },
             }),
         ])
-        return post
+        return
     }
 
     async deletePost(postid, id) {
@@ -48,7 +48,7 @@ class PostService {
             $pull: { post: postid },
         })
         await PostModel.findByIdAndDelete(postid)
-        return 'deleted'
+        return 
     }
 
     async putPost(postid, text, name, userid) {
@@ -63,8 +63,8 @@ class PostService {
     }
 
     async countpost() {
-        const a = await PostModel.countDocuments()
-        return a
+        const total_count_posts = await PostModel.countDocuments()
+        return total_count_posts
     }
 
     async getUserPosts(userId, page, limit) {
@@ -76,8 +76,8 @@ class PostService {
     }
 
     async getUserPostsCount(userId){
-        const postsCount = await PostModel.find({ author: userId }).countDocuments()
-        return postsCount
+        const total_count_user_posts = await PostModel.find({ author: userId }).countDocuments()
+        return total_count_user_posts
     }
     
 }

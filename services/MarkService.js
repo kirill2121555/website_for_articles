@@ -3,24 +3,24 @@ const MarkModel = require('../models/markModel');
 class MarkService {
 
     async postmark(iduser, id, mark) {
-        const a = await MarkModel.findOne({ Post_id: id, user_id: iduser })
-        if (!a) {
-            const newMark = await MarkModel.create({ Post_id: id, user_id: iduser, mark: mark })
-            return 'оценка созада'
+        const mark_exists = await MarkModel.findOne({ Post_id: id, user_id: iduser })
+        if (!mark_exists) {
+            await MarkModel.create({ Post_id: id, user_id: iduser, mark: mark })
+            return
         }
-        if (a.mark === mark) {
+        if (mark_exists.mark === mark) {
             await MarkModel.findByIdAndDelete(a.id)
-            return 'оценка такая стояла, ваша оценка была обнулена'
+            return
         }
-        a.mark = mark
-        await a.save()
-        return a
-    }
+        mark_exists.mark = mark
+        await mark_exists.save()
+        return
+        }
 
     async getYourMark(iduser, id) {
-        const a = await MarkModel.findOne({ Post_id: id, user_id: iduser })
-        if (a) {
-            return a.mark
+        const mark = await MarkModel.findOne({ Post_id: id, user_id: iduser })
+        if (mark) {
+            return mark.mark
         }
         return {mark:null}
     }

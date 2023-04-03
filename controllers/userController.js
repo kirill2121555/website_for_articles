@@ -6,7 +6,7 @@ class UserController {
     try {
       const { email, password } = req.body
       const token = await userService.registration(email, password)
-      return res.status(200).json({ token })
+      return res.status(201).json({ token })
     } catch (error) {
       logger.error('Error in UserController.registration ' + error.message);
       return res.status(400).json(error.message)
@@ -17,7 +17,7 @@ class UserController {
     try {
       const { email, password } = req.body
       const token = await userService.login(email, password)
-      return res.json({ token })
+      return res.status(201).json({ token })
     } catch (error) {
       logger.error('Error in UserController.login ' + error.message);
       return res.status(400).json(error.message)
@@ -44,8 +44,8 @@ class UserController {
     try {
       const { nick } = req.body
       const userId = req.user.id
-      const newnick = await userService.updateNick(userId, nick)
-      return res.status(200).json(newnick)
+      await userService.updateNick(userId, nick)
+      return res.status(204)
     }
     catch (error) {
       logger.error('Error in UserController.updateNick ' + error.message);
@@ -57,8 +57,8 @@ class UserController {
     try {
       const userId = req.user.id
       const { email } = req.body
-      const newEmail = await userService.updateEmail(userId, email)
-      return res.status(200).json(newEmail)
+      await userService.updateEmail(userId, email)
+      return res.status(204)
     } catch (error) {
       logger.error('Error in UserController.updateEmail ' + error.message);
       return res.status(400).json(error.message)
@@ -68,8 +68,8 @@ class UserController {
   async addFoto(req, res) {
     try {
       const userId = req.user.id
-      const a = await userService.addfoto(userId, req.file)
-      return res.status(200).json(a)
+      await userService.addfoto(userId, req.file)
+      return res.status(201)
     } catch (error) {
       logger.error('Error in UserController.addFoto ' + error, message);
       return res.status(400).json(error.message)

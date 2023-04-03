@@ -8,8 +8,8 @@ class MarkController {
             const iduser = req.user.id
             const id = req.params.id
             const mark = req.params.mark
-            const a = await MarkService.postmark(iduser, id, mark)
-            return res.status(200).json(a)
+            await MarkService.postmark(iduser, id, mark)
+            return res.status(201)
         } catch (error) {
             logger.error('Error in MarkController.grade '+error.message);
             return res.status(400).json(error.message)
